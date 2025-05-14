@@ -55,7 +55,7 @@ public class TestDbFacade {
             JdbcTestUtils.deleteFromTables(
                     template,
                     "recognize",
-                    "order"
+                    "user_order"
             );
 
             return null;

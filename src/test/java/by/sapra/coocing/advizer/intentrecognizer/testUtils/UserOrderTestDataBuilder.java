@@ -2,6 +2,8 @@ package by.sapra.coocing.advizer.intentrecognizer.testUtils;
 
 import by.sapra.coocing.advizer.intentrecognizer.domain.entityObject.UserOrder;
 
+import java.util.UUID;
+
 public class UserOrderTestDataBuilder implements TestDataBuilder<UserOrder> {
 
     private String userMessage = "test_user_message";
@@ -25,6 +27,7 @@ public class UserOrderTestDataBuilder implements TestDataBuilder<UserOrder> {
     public UserOrder build() {
         UserOrder userOrder = new UserOrder();
 
+        userOrder.setId(UUID.randomUUID().toString());
         userOrder.setUserMessage(userMessage);
 
         return userOrder;
