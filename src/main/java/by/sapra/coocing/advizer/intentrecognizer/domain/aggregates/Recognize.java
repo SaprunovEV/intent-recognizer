@@ -25,7 +25,7 @@ public class Recognize extends AbstractAggregateRoot<Recognize> {
     private IntentType intent;
 
     private Instant create = Instant.now();
-    private Instant update;
+    private Instant update = Instant.now();
 
     @PreUpdate
     public void preUpdate() {
