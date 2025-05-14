@@ -24,11 +24,17 @@ public class Recognize extends AbstractAggregateRoot<Recognize> {
     @Embedded
     private IntentType intent;
 
-    private Instant create = Instant.now();
-    private Instant update = Instant.now();
+    private Instant createAt;
+    private Instant updateAt;
 
     @PreUpdate
     public void preUpdate() {
-        this.update = Instant.now();
+        this.updateAt = Instant.now();
+    }
+
+    @PrePersist
+    public void preCreate() {
+        createAt = Instant.now();
+        updateAt = Instant.now();
     }
 }
