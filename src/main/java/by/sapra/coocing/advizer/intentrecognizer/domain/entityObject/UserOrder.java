@@ -1,16 +1,20 @@
 package by.sapra.coocing.advizer.intentrecognizer.domain.entityObject;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+import java.time.Instant;
+
+@Embeddable
 @Getter
 @Setter
 public class UserOrder {
-    @Id
+    @Column(name = "user_order_id")
     private String id;
 
     private String userMessage;
+
+    private Instant sendingTime;
 }
