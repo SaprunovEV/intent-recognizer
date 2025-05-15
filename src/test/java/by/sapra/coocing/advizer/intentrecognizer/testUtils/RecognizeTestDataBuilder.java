@@ -1,6 +1,7 @@
 package by.sapra.coocing.advizer.intentrecognizer.testUtils;
 
 import by.sapra.coocing.advizer.intentrecognizer.domain.aggregates.Recognize;
+import by.sapra.coocing.advizer.intentrecognizer.domain.command.RecognizeCommand;
 import by.sapra.coocing.advizer.intentrecognizer.domain.entityObject.UserOrder;
 import by.sapra.coocing.advizer.intentrecognizer.domain.valueObject.IntentType;
 
@@ -33,10 +34,17 @@ public class RecognizeTestDataBuilder implements TestDataBuilder<Recognize> {
 
     @Override
     public Recognize build() {
-        Recognize recognize = new Recognize();
+        UserOrder userOrder = userOrderBuilder.build();
+
+        RecognizeCommand recognizeCommand = new RecognizeCommand(
+                userOrder.getId(), userOrder.getUserMessage(), userOrder.getSendingTime()
+        );
+
+
+        Recognize recognize = new Recognize(recognizeCommand);
 
         recognize.setIntent(intentType);
-        UserOrder userOrder = userOrderBuilder.build();
+
 
         recognize.setOrder(userOrder);
 

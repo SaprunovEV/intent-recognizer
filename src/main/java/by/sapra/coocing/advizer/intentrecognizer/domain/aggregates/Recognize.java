@@ -1,7 +1,10 @@
 package by.sapra.coocing.advizer.intentrecognizer.domain.aggregates;
 
+import by.sapra.coocing.advizer.intentrecognizer.domain.command.RecognizeCommand;
 import by.sapra.coocing.advizer.intentrecognizer.domain.entityObject.UserOrder;
 import by.sapra.coocing.advizer.intentrecognizer.domain.valueObject.IntentType;
+import by.sapra.coocing.advizer.intentrecognizer.domain.events.RecognizeBookedEvent;
+import by.sapra.coocing.advizer.intentrecognizer.domain.events.RecognizeBookedEventData;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +20,7 @@ public class Recognize extends AbstractAggregateRoot<Recognize> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
+    @Embedded
     private UserOrder order;
 
     @Embedded
@@ -26,6 +28,25 @@ public class Recognize extends AbstractAggregateRoot<Recognize> {
 
     private Instant createAt;
     private Instant updateAt;
+
+    protected Recognize() {
+    }
+
+    public Recognize(RecognizeCommand command) {
+        updateOrder(command);
+
+        addDomainEvent(new RecognizeBookedEvent(
+                        new RecognizeBookedEventData(this.id, command.message())
+                )
+        );
+    }
+
+    private void updateOrder(RecognizeCommand command) {
+        order = new UserOrder();
+        order.setSendingTime(command.sendingTime());
+        order.setUserMessage(command.message());
+        order.setId(command.orderId());
+    }
 
     @PreUpdate
     public void preUpdate() {
@@ -36,5 +57,9 @@ public class Recognize extends AbstractAggregateRoot<Recognize> {
     public void preCreate() {
         createAt = Instant.now();
         updateAt = Instant.now();
+    }
+
+    private void addDomainEvent(Object event) {
+        registerEvent(event);
     }
 }
