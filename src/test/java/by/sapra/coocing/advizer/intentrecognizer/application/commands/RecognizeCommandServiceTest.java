@@ -18,7 +18,7 @@ import org.testcontainers.utility.DockerImageName;
 import java.time.Instant;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @DataJpaTest
 @RecordApplicationEvents
@@ -40,7 +40,7 @@ class RecognizeCommandServiceTest {
 
         sut.recognize(command);
 
-        assertNotNull(applicationEvents.stream(RecognizeBookedEvent.class));
+        assertFalse(applicationEvents.stream(RecognizeBookedEvent.class).findFirst().isEmpty());
     }
 
 
