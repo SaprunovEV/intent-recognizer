@@ -4,7 +4,6 @@ import by.sapra.coocing.advizer.intentrecognizer.domain.command.RecognizeCommand
 import by.sapra.coocing.advizer.intentrecognizer.domain.entityObject.UserOrder;
 import by.sapra.coocing.advizer.intentrecognizer.domain.valueObject.IntentType;
 import by.sapra.coocing.advizer.intentrecognizer.domain.events.RecognizeBookedEvent;
-import by.sapra.coocing.advizer.intentrecognizer.domain.events.RecognizeBookedEventData;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,10 +34,7 @@ public class Recognize extends AbstractAggregateRoot<Recognize> {
     public Recognize(RecognizeCommand command) {
         updateOrder(command);
 
-        addDomainEvent(new RecognizeBookedEvent(
-                        new RecognizeBookedEventData(this.id, command.message())
-                )
-        );
+        addDomainEvent(new RecognizeBookedEvent(this));
     }
 
     private void updateOrder(RecognizeCommand command) {
