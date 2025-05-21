@@ -1,6 +1,6 @@
-package by.sapra.coocing.advizer.intentrecognizer.testUtils;
+package by.sapra.coocing.advizer.intentrecognizer.domain.entityObject;
 
-import by.sapra.coocing.advizer.intentrecognizer.domain.entityObject.UserOrder;
+import by.sapra.coocing.advizer.intentrecognizer.testUtils.TestDataBuilder;
 
 import java.time.Instant;
 import java.util.UUID;

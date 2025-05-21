@@ -1,9 +1,8 @@
-package by.sapra.coocing.advizer.intentrecognizer.testUtils;
+package by.sapra.coocing.advizer.intentrecognizer.domain.aggregates;
 
-import by.sapra.coocing.advizer.intentrecognizer.domain.aggregates.Recognize;
-import by.sapra.coocing.advizer.intentrecognizer.domain.command.RecognizeCommand;
 import by.sapra.coocing.advizer.intentrecognizer.domain.entityObject.UserOrder;
 import by.sapra.coocing.advizer.intentrecognizer.domain.valueObject.IntentType;
+import by.sapra.coocing.advizer.intentrecognizer.testUtils.TestDataBuilder;
 
 public class RecognizeTestDataBuilder implements TestDataBuilder<Recognize> {
 
@@ -36,16 +35,8 @@ public class RecognizeTestDataBuilder implements TestDataBuilder<Recognize> {
     public Recognize build() {
         UserOrder userOrder = userOrderBuilder.build();
 
-        RecognizeCommand recognizeCommand = new RecognizeCommand(
-                userOrder.getId(), userOrder.getUserMessage(), userOrder.getSendingTime()
-        );
-
-
-        Recognize recognize = new Recognize(recognizeCommand);
-
+        Recognize recognize = new Recognize();
         recognize.setIntent(intentType);
-
-
         recognize.setOrder(userOrder);
 
         return recognize;
