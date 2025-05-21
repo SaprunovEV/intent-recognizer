@@ -1,6 +1,7 @@
 package by.sapra.coocing.advizer.intentrecognizer.infrastructure.jpa;
 
 import by.sapra.coocing.advizer.intentrecognizer.domain.aggregates.Recognize;
+import by.sapra.coocing.advizer.intentrecognizer.domain.valueObject.IntentType;
 import by.sapra.coocing.advizer.intentrecognizer.testUtils.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static by.sapra.coocing.advizer.intentrecognizer.testUtils.RecognizeTestDataBuilder.aRecognize;
-import static by.sapra.coocing.advizer.intentrecognizer.testUtils.UserOrderTestDataBuilder.aUserOrder;
+import static by.sapra.coocing.advizer.intentrecognizer.domain.aggregates.RecognizeTestDataBuilder.aRecognize;
+import static by.sapra.coocing.advizer.intentrecognizer.domain.entityObject.UserOrderTestDataBuilder.aUserOrder;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
@@ -30,5 +32,21 @@ class RecognizeRepositoryTest extends AbstractIntegrationTest {
         Recognize actual = getFacade().find(expected.getId(), Recognize.class);
 
         assertNotNull(actual);
+    }
+
+    @Test
+    void shouldUpdateIntent() throws Exception {
+        Recognize save = getFacade().save(
+                aRecognize()
+                        .withUserOrder(aUserOrder())
+                        .withIntentType(null)
+        );
+
+        save.setIntent(IntentType.SINGLE_RECIPE);
+        Recognize save1 = sut.save(save);
+
+        Recognize actual = getFacade().find(save1.getId(), Recognize.class);
+
+        assertEquals(save.getIntent(), actual.getIntent());
     }
 }
