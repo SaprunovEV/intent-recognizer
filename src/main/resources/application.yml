@@ -1,7 +1,7 @@
 spring:
   ai:
     openai:
-      api-key: &{LLM_API_KEY:test_key}
+      api-key: ${LLM_API_KEY:test_key}
   application:
     name: intent-recognizer
   datasource:
