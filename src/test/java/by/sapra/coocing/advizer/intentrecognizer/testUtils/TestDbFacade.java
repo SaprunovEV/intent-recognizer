@@ -14,6 +14,10 @@ public class TestDbFacade {
     @Autowired
     private TestEntityManager entityManager;
 
+    public TransactionTemplate getTransactionTemplate() {
+        return transactionTemplate;
+    }
+
     public <T> T find(Object id, Class<T> entityClass) {
         return transactionTemplate.execute(status -> entityManager.find(entityClass, id));
     }
