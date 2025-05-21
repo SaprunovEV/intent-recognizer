@@ -2,6 +2,7 @@ package by.sapra.coocing.advizer.intentrecognizer.domain.aggregates;
 
 import by.sapra.coocing.advizer.intentrecognizer.domain.command.RecognizeCommand;
 import by.sapra.coocing.advizer.intentrecognizer.domain.entityObject.UserOrder;
+import by.sapra.coocing.advizer.intentrecognizer.domain.events.RecognizeCompleteEvent;
 import by.sapra.coocing.advizer.intentrecognizer.domain.valueObject.IntentType;
 import by.sapra.coocing.advizer.intentrecognizer.domain.events.RecognizeBookedEvent;
 import jakarta.persistence.*;
@@ -22,7 +23,7 @@ public class Recognize extends AbstractAggregateRoot<Recognize> {
     @Embedded
     private UserOrder order;
 
-    @Embedded
+    @Enumerated(value = EnumType.STRING)
     private IntentType intent;
 
     private Instant createAt;
@@ -53,6 +54,12 @@ public class Recognize extends AbstractAggregateRoot<Recognize> {
     public void preCreate() {
         createAt = Instant.now();
         updateAt = Instant.now();
+    }
+
+    public void updateType(IntentType type) {
+        this.intent = type;
+
+        addDomainEvent(new RecognizeCompleteEvent(this));
     }
 
     private void addDomainEvent(Object event) {
